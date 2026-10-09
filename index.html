@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube System Design — SD Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="game-header">
+    <div class="header-top">
+      <h1 class="game-title">YouTube <span>System Design</span></h1>
+      <p class="game-subtitle">Build the architecture · Connect components · Pass the validation</p>
+    </div>
+
+    <nav class="icon-bar" id="icon-palette" aria-label="Component palette">
+      <button class="game-icon palette-icon" draggable="true" data-tech="client" title="Client">
+        <span class="icon-frame"><img src="icons/client.svg" alt="Client"></span>
+        <span class="icon-label">Client</span>
+      </button>
+      <button class="game-icon palette-icon" draggable="true" data-tech="dns" title="DNS">
+        <span class="icon-frame"><img src="icons/dns.svg" alt="DNS"></span>
+        <span class="icon-label">DNS</span>
+      </button>
+      <button class="game-icon palette-icon" draggable="true" data-tech="cdn" title="CDN">
+        <span class="icon-frame"><img src="icons/cdn.svg" alt="CDN"></span>
+        <span class="icon-label">CDN</span>
+      </button>
+      <button class="game-icon palette-icon" draggable="true" data-tech="loadbalancer" title="Load Balancer">
+        <span class="icon-frame"><img src="icons/loadbalancer.svg" alt="Load Balancer"></span>
+        <span class="icon-label">LB</span>
+      </button>
+      <button class="game-icon palette-icon" draggable="true" data-tech="apigateway" title="API Gateway">
+        <span class="icon-frame"><img src="icons/apigateway.svg" alt="API Gateway"></span>
+        <span class="icon-label">Gateway</span>
+      </button>
+
+      <span class="icon-divider" aria-hidden="true"></span>
+
+      <button class="game-icon palette-icon" draggable="true" data-tech="service" data-label="Upload Service" data-key="upload" title="Upload Service">
+        <span class="icon-frame"><img src="icons/service.svg" alt="Upload Service"></span>
+        <span class="icon-label">Upload</span>
+      </button>
+      <button class="game-icon palette-icon" draggable="true" data-tech="service" data-label="Video Service" data-key="video" title="Video Service">
+        <span class="icon-frame"><img src="icons/service.svg" alt="Video Service"></span>
+        <span class="icon-label">Video</span>
+      </button>
+      <button class="game-icon palette-icon" draggable="true" data-tech="service" data-label="Search Service" data-key="search" title="Search Service">
+        <span class="icon-frame"><img src="icons/service.svg" alt="Search Service"></span>
+        <span class="icon-label">Search</span>
+      </button>
+      <button class="game-icon palette-icon" draggable="true" data-tech="service" data-label="Comment Service" data-key="comment" title="Comment Service">
+        <span class="icon-frame"><img src="icons/service.svg" alt="Comment Service"></span>
+        <span class="icon-label">Comment</span>
+      </button>
+      <button class="game-icon palette-icon" draggable="true" data-tech="service" data-label="Recommend Service" data-key="recommendation" title="Recommend Service">
+        <span class="icon-frame"><img src="icons/service.svg" alt="Recommend Service"></span>
+        <span class="icon-label">Recommend</span>
+      </button>
+      <button class="game-icon palette-icon" draggable="true" data-tech="transcoder" title="Video Transcoder">
+        <span class="icon-frame"><img src="icons/transcoder.svg" alt="Transcoder"></span>
+        <span class="icon-label">Transcoder</span>
+      </button>
+      <button class="game-icon palette-icon" draggable="true" data-tech="blobstorage" title="Blob Storage">
+        <span class="icon-frame"><img src="icons/blobstorage.svg" alt="Blob Storage"></span>
+        <span class="icon-label">Storage</span>
+      </button>
+
+      <span class="icon-divider" aria-hidden="true"></span>
+
+      <button class="game-icon palette-icon" draggable="true" data-tech="kafka" title="Kafka">
+        <span class="icon-frame"><img src="icons/kafka.svg" alt="Kafka"></span>
+        <span class="icon-label">Kafka</span>
+      </button>
+      <button class="game-icon palette-icon" draggable="true" data-tech="redis" title="Redis">
+        <span class="icon-frame"><img src="icons/redis.svg" alt="Redis"></span>
+        <span class="icon-label">Redis</span>
+      </button>
+      <button class="game-icon palette-icon" draggable="true" data-tech="cassandra" title="Cassandra">
+        <span class="icon-frame"><img src="icons/cassandra.svg" alt="Cassandra"></span>
+        <span class="icon-label">Cassandra</span>
+      </button>
+      <button class="game-icon palette-icon" draggable="true" data-tech="elasticsearch" title="Elasticsearch">
+        <span class="icon-frame"><img src="icons/elasticsearch.svg" alt="Elasticsearch"></span>
+        <span class="icon-label">Elastic</span>
+      </button>
+    </nav>
+  </header>
+
+  <main class="game-stage">
+    <div class="stage-toolbar">
+      <div class="toolbar-left">
+        <span class="toolbar-label">CANVAS</span>
+        <span class="toolbar-hint" id="toolbar-hint">Drop icons · Drag to move · Double-click to remove · Connect mode to draw lines</span>
+      </div>
+      <div class="scenario-selector" role="group" aria-label="Request scenario">
+        <span class="scale-label">Scenario</span>
+        <button class="scenario-btn active" data-scenario="search">🔍 Search</button>
+        <button class="scenario-btn" data-scenario="comment">💬 Comment</button>
+        <button class="scenario-btn" data-scenario="recommend">✨ Recommend</button>
+        <button class="scenario-btn" data-scenario="upload">📤 Upload</button>
+      </div>
+      <div class="scale-selector" role="group" aria-label="User scale">
+        <span class="scale-label">Users</span>
+        <button class="scale-btn active" data-scale="10k">10,000</button>
+        <button class="scale-btn" data-scale="1m">1,000,000</button>
+        <button class="scale-btn" data-scale="10m">10,000,000+</button>
+      </div>
+      <div class="toolbar-actions">
+        <button class="btn btn-secondary" id="btn-connect" aria-pressed="false">Connect Mode</button>
+        <button class="btn btn-sim" id="btn-simulate">▶ Simulate Traffic</button>
+        <button class="btn btn-primary" id="btn-validate">Validate Design</button>
+        <button class="btn btn-secondary" id="btn-load-youtube">Load Answer</button>
+        <button class="btn btn-secondary" id="btn-clear">Clear</button>
+      </div>
+    </div>
+
+    <div class="canvas-wrap">
+      <div class="sim-panel" id="sim-panel">
+        <div class="sim-panel-header">
+          <span class="sim-panel-title">Live Traffic — <span id="sim-scenario-name">Search Video</span></span>
+          <span class="sim-status" id="sim-status">Idle</span>
+        </div>
+        <div class="sim-stats">
+          <div class="sim-stat"><span class="sim-stat-val" id="stat-total">0</span><span class="sim-stat-lbl">Total Requests</span></div>
+          <div class="sim-stat"><span class="sim-stat-val" id="stat-rps">0</span><span class="sim-stat-lbl">Req/sec</span></div>
+          <div class="sim-stat"><span class="sim-stat-val" id="stat-active">0</span><span class="sim-stat-lbl">In Flight</span></div>
+          <div class="sim-stat success"><span class="sim-stat-val" id="stat-success">0</span><span class="sim-stat-lbl">Handled</span></div>
+          <div class="sim-stat fail"><span class="sim-stat-val" id="stat-failed">0</span><span class="sim-stat-lbl">Failed</span></div>
+          <div class="sim-stat"><span class="sim-stat-val" id="stat-latency">—</span><span class="sim-stat-lbl">Avg Latency</span></div>
+        </div>
+        <div class="sim-log" id="sim-log"></div>
+      </div>
+      <div class="load-bar-wrap" id="load-bar-wrap">
+        <div class="load-bar-header">
+          <span class="load-bar-label">System load</span>
+          <span class="load-bar-value" id="load-value">0%</span>
+        </div>
+        <div class="load-bar-track"><div class="load-bar-fill" id="load-fill"></div></div>
+        <div class="overload-alert" id="overload-alert" hidden></div>
+        <div class="load-metrics" id="load-metrics"></div>
+      </div>
+      <div class="canvas" id="canvas">
+        <svg class="connections" id="connections" aria-hidden="true"></svg>
+        <div class="canvas-nodes" id="canvas-nodes"></div>
+        <div class="canvas-drop-hint" id="drop-hint">Drop components here to build YouTube's architecture</div>
+      </div>
+    </div>
+
+    <aside class="info-panel" id="info-panel">
+      <div class="info-placeholder">Build your design, connect components, then hit <strong>Validate Design</strong></div>
+    </aside>
+  </main>
+
+  <div class="result-overlay" id="result-overlay" hidden>
+    <div class="result-card" id="result-card">
+      <div class="result-icon" id="result-icon"></div>
+      <h2 class="result-title" id="result-title"></h2>
+      <p class="result-message" id="result-message"></p>
+      <ul class="result-issues" id="result-issues"></ul>
+      <button class="btn btn-primary" id="btn-close-result">Continue</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
